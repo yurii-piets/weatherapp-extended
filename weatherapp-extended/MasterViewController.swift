@@ -11,7 +11,9 @@ import UIKit
 class MasterViewController: UITableViewController {
 
     var detailViewController: DetailViewController? = nil
-    var objects = [Any]()
+    var objects = [CityWeatherItem]()
+    
+    let group = DispatchGroup()
 
 
     override func viewDidLoad() {
@@ -25,6 +27,9 @@ class MasterViewController: UITableViewController {
             let controllers = split.viewControllers
             detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
         }
+        
+        group.enter()
+        objects.insert(CityWeatherItem(id: 523920, group: group), at: 0)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -34,7 +39,7 @@ class MasterViewController: UITableViewController {
 
     @objc
     func insertNewObject(_ sender: Any) {
-        objects.insert(NSDate(), at: 0)
+        objects.insert(CityWeatherItem(id: 0, group: group), at: 0)
         let indexPath = IndexPath(row: 0, section: 0)
         tableView.insertRows(at: [indexPath], with: .automatic)
     }
@@ -44,7 +49,7 @@ class MasterViewController: UITableViewController {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "showDetail" {
             if let indexPath = tableView.indexPathForSelectedRow {
-                let object = objects[indexPath.row] as! NSDate
+                let object = objects[indexPath.row] as CityWeatherItem
                 let controller = (segue.destination as! UINavigationController).topViewController as! DetailViewController
                 controller.detailItem = object
                 controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
@@ -64,10 +69,13 @@ class MasterViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! CityWeatherCell
 
-        let object = objects[indexPath.row] as! NSDate
-        cell.textLabel!.text = object.description
+        self.group.wait()
+        let object = objects[indexPath.row]
+        cell.name!.text = object.weather!.title
+        cell.temp!.text = String(format:"%.0f ºC", object.weather!.weatherElements![0].theTemp!)
+        cell.icon!.image = UIImage(data: object.image!)
         return cell
     }
 
@@ -87,4 +95,3 @@ class MasterViewController: UITableViewController {
 
 
 }
-
