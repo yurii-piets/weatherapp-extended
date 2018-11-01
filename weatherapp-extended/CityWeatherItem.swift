@@ -23,6 +23,7 @@ class CityWeatherItem {
     init(id: Int, group: DispatchGroup) {
         self.id = id
         self.group = group
+        self.group.enter()
         self.loadData();
     }
     

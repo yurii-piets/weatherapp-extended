@@ -14,7 +14,10 @@ class MasterViewController: UITableViewController {
     var objects = [CityWeatherItem]()
     
     let group = DispatchGroup()
-
+    
+    let warsawId: Int = 523920
+    let londonId: Int = 44418
+    let pragueId: Int = 796597
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,8 +31,9 @@ class MasterViewController: UITableViewController {
             detailViewController = (controllers[controllers.count-1] as! UINavigationController).topViewController as? DetailViewController
         }
         
-        group.enter()
-        objects.insert(CityWeatherItem(id: 523920, group: group), at: 0)
+        objects.insert(CityWeatherItem(id: warsawId, group: group), at: 0)
+        objects.insert(CityWeatherItem(id: londonId, group: group), at: 1)
+        objects.insert(CityWeatherItem(id: pragueId, group: group), at: 2)
     }
 
     override func viewWillAppear(_ animated: Bool) {
