@@ -83,6 +83,7 @@ class AddCityTableViewController: UITableViewController, UISearchBarDelegate, CL
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let currentLocation = locations[0]
+        print(currentLocation)
         let latlong = "\(currentLocation.coordinate.latitude),\(currentLocation.coordinate.longitude)"
         let urlString = "https://www.metaweather.com/api/location/search/?lattlong=" + latlong
         
@@ -98,10 +99,32 @@ class AddCityTableViewController: UITableViewController, UISearchBarDelegate, CL
             self.objects = try! JSONDecoder().decode([CityItem].self, from: d!);
             
             DispatchQueue.main.async {
+                if (self.objects.count != 0) {
+                    self.showToast(message: "Closest location: " + self.objects[0].title!)
+                }
                 self.tableView.reloadData()
             }
         }.resume();
         
+    }
+    
+    //source of this method - https://stackoverflow.com/questions/31540375/how-to-toast-message-in-swift
+    func showToast(message : String) {
+        let toastLabel = UILabel(frame: CGRect(x: self.view.frame.size.width/2 - 150, y: 700, width: 300, height: 35))
+        toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        toastLabel.textColor = UIColor.white
+        toastLabel.textAlignment = .center;
+        toastLabel.font = UIFont(name: "Montserrat-Light", size: 12.0)
+        toastLabel.text = message
+        toastLabel.alpha = 1.0
+        toastLabel.layer.cornerRadius = 10;
+        toastLabel.clipsToBounds  =  true
+        self.view.addSubview(toastLabel)
+        UIView.animate(withDuration: 10.0, delay: 0.1, options: .curveEaseOut, animations: {
+            toastLabel.alpha = 0.0
+        }, completion: {(isCompleted) in
+            toastLabel.removeFromSuperview()
+        })
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
