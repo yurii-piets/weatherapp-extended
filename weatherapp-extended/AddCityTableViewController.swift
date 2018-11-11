@@ -1,14 +1,18 @@
 import UIKit
+import CoreLocation
 
-class AddCityTableViewController: UITableViewController, UISearchBarDelegate {
+class AddCityTableViewController: UITableViewController, UISearchBarDelegate, CLLocationManagerDelegate {
 
     @IBOutlet weak var searchBar: UISearchBar!
+    
+    @IBOutlet weak var currentLocationButton: UIButton!
     
     var objects = [CityItem]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         searchBar.delegate = self
+        self.currentLocationButton.addTarget(self, action: #selector(currentLocationBtnClicked), for: UIControl.Event.touchUpInside)
     }
 
     // MARK: - Table view data source
@@ -66,5 +70,24 @@ class AddCityTableViewController: UITableViewController, UISearchBarDelegate {
             }
         }.resume();
     }
-
+    
+    let locationManager = CLLocationManager()
+    
+    @objc func currentLocationBtnClicked(sender: UIButton!){
+        if (CLLocationManager.locationServicesEnabled()) {
+            locationManager.delegate = self
+            locationManager.requestWhenInUseAuthorization()
+            locationManager.startUpdatingLocation()
+        }
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        let currentLocation = locations[0]
+        print(currentLocation)
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
+        locationManager.stopUpdatingLocation()
+        print(error)
+    }
 }

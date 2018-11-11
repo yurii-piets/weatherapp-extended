@@ -231,7 +231,7 @@
             </objects>
             <point key="canvasLocation" x="708" y="-630.13493253373315"/>
         </scene>
-        <!--Root View Controller-->
+        <!--Add City Table View Controller-->
         <scene sceneID="Bxw-4Y-8QI">
             <objects>
                 <tableViewController id="fri-fs-Wbg" customClass="AddCityTableViewController" customModule="weatherapp_extended" customModuleProvider="target" sceneMemberID="viewController">
@@ -272,8 +272,16 @@
                             <outlet property="delegate" destination="fri-fs-Wbg" id="Lf3-V0-gAq"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="SDe-aE-Que"/>
+                    <navigationItem key="navigationItem" id="SDe-aE-Que">
+                        <nil key="title"/>
+                        <button key="titleView" opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="DdK-G6-BrL" userLabel="ChooseCurrentLocation">
+                            <rect key="frame" x="105" y="7" width="165" height="30"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <state key="normal" title="Choose current location"/>
+                        </button>
+                    </navigationItem>
                     <connections>
+                        <outlet property="currentLocationButton" destination="DdK-G6-BrL" id="8ps-Ih-Xoj"/>
                         <outlet property="searchBar" destination="hUS-yF-VpG" id="TCv-V2-0oq"/>
                     </connections>
                 </tableViewController>
