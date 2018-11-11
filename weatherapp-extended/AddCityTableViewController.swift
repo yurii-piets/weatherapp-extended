@@ -83,7 +83,25 @@ class AddCityTableViewController: UITableViewController, UISearchBarDelegate, CL
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let currentLocation = locations[0]
-        print(currentLocation)
+        let latlong = "\(currentLocation.coordinate.latitude),\(currentLocation.coordinate.longitude)"
+        let urlString = "https://www.metaweather.com/api/location/search/?lattlong=" + latlong
+        
+        let url = URL(string: urlString.replacingOccurrences(of: " ", with: "%20"));
+        let request: URLRequest = URLRequest(url: url!);
+        URLSession.shared.dataTask(with: request) {(d, resp, err) in
+            
+            if let err = err {
+                print("Unexpected \(err)");
+                return;
+            }
+            
+            self.objects = try! JSONDecoder().decode([CityItem].self, from: d!);
+            
+            DispatchQueue.main.async {
+                self.tableView.reloadData()
+            }
+        }.resume();
+        
     }
     
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
