@@ -7,12 +7,15 @@ class MapKitViewController: UIViewController, MKMapViewDelegate {
     
     let regionRadius: CLLocationDistance = 500 * 1000
     
+    var cityName: String?
+    
+    var location: CLLocationCoordinate2D?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.mapView.delegate = self
-        let location = CLLocationCoordinate2D(latitude: 50.064528, longitude: 19.923556)
-        self.centerMapOnLocation(location: location)
-        self.putAtwork(title: "Krakow", location: location)
+        self.centerMapOnLocation(location: self.location!)
+        self.putAtwork(title: self.cityName!, location: self.location!)
     }
     
     func centerMapOnLocation(location: CLLocationCoordinate2D) {

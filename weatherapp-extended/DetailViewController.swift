@@ -1,4 +1,5 @@
 import UIKit
+import MapKit
 
 class DetailViewController: UIViewController {
 
@@ -84,7 +85,14 @@ class DetailViewController: UIViewController {
             DispatchQueue.main.async {
                 self.weatherIcon.image = UIImage(data: d!)
             }
-            }.resume();
+        }.resume();
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let controller = segue.destination as! MapKitViewController
+        controller.cityName = self.detailItem?.weather!.title;
+        let latlong = self.detailItem?.weather!.latlong?.split(separator: ",")
+        controller.location = CLLocationCoordinate2D(latitude: Double(String(latlong![0]))!, longitude: Double(String(latlong![1]))!)
     }
 }
 

@@ -9,6 +9,8 @@ class AddCityTableViewController: UITableViewController, UISearchBarDelegate, CL
     
     var objects = [CityItem]()
     
+    let locationManager = CLLocationManager()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         searchBar.delegate = self
@@ -70,8 +72,6 @@ class AddCityTableViewController: UITableViewController, UISearchBarDelegate, CL
             }
         }.resume();
     }
-    
-    let locationManager = CLLocationManager()
     
     @objc func currentLocationBtnClicked(sender: UIButton!){
         if (CLLocationManager.locationServicesEnabled()) {

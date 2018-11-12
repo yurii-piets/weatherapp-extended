@@ -3,10 +3,12 @@ import Foundation
 struct Weather: Decodable {
     let title: String?
     let weatherElements: [WeatherElement]?
+    let latlong: String?
     
     enum CodingKeys: String, CodingKey {
         case title = "title"
         case weatherElements = "consolidated_weather"
+        case latlong = "latt_long"
     }
 }
 
